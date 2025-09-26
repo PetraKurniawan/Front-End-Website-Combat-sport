@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Legacy Combat Series - Athletes</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Lora:wght@400;500&display=swap" rel="stylesheet" />
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+      :root {
+        --primary-blue: #1a2e66;
+        --secondary-blue: #2b4ea1;
+        --accent-blue: #4f80e2;
+        --dark-blue: #111827;
+        --light-blue: #e0e7ff;
+        --gold-accent: #b89778;
+        --background-dark: #0b132b;
+      }
+
+      body {
+        font-family: "Lora", serif;
+        background: linear-gradient(135deg, var(--background-dark) 0%, #1e2a44 100%);
+        color: #e2e8f0;
+        overflow-x: hidden;
+        line-height: 1.7;
+      }
+
+      /* Custom Navbar */
+      .navbar-custom {
+        background: rgba(11, 19, 43, 0.95) !important;
+        backdrop-filter: blur(15px);
+        border-bottom: 1px solid var(--accent-blue);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        transition: all 0.4s ease;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .navbar-custom .navbar-brand {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.3rem;
+        font-weight: 700;
+        color: var(--gold-accent) !important;
+        letter-spacing: 1.5px;
+        text-shadow: 0 0 12px rgba(184, 151, 120, 0.6);
+      }
+
+      .navbar-custom .nav-link {
+        font-family: "Lora", serif;
+        font-weight: 500;
+        color: #e2e8f0 !important;
+        margin: 0 15px;
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .navbar-custom .nav-link:hover,
+      .navbar-custom .nav-link.active {
+        color: var(--gold-accent) !important;
+        transform: translateY(-2px);
+      }
+
+      .navbar-custom .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--gold-accent);
+        transition: width 0.3s ease;
+      }
+
+      .navbar-custom .nav-link:hover::after,
+      .navbar-custom .nav-link.active::after {
+        width: 100%;
+      }
+
+      /* Hero Section */
+      .hero {
+        background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-blue) 50%, var(--background-dark) 100%);
+        padding: 100px 0 60px;
+        position: relative;
+        text-align: center;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(43, 78, 161, 0.3), rgba(17, 24, 39, 0.3));
+        z-index: 0;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 3.8rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--accent-blue), var(--gold-accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: glow 2.5s ease-in-out infinite alternate;
+        text-shadow: 0 0 20px rgba(184, 151, 120, 0.6);
+      }
+
+      .hero-description {
+        color: #e2e8f0;
+        font-size: 1.3rem;
+        line-height: 1.8;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Athletes Section */
+      .athletes-section {
+        background: linear-gradient(135deg, #1e2a44 0%, #2d4263 100%);
+        padding: 80px 0;
+      }
+
+      .section-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 3.8rem;
+        background: linear-gradient(135deg, var(--accent-blue), var(--gold-accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 700;
+        margin-bottom: 50px;
+        text-align: center;
+      }
+
+      .athlete-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(79, 128, 226, 0.3);
+        border-radius: 20px;
+        padding: 30px;
+        transition: all 0.4s ease;
+        text-align: center;
+        height: 100%;
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .athlete-card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(184, 151, 120, 0.2), transparent);
+        transition: all 0.5s ease;
+        opacity: 0;
+      }
+
+      .athlete-card:hover::before {
+        opacity: 1;
+      }
+
+      .athlete-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--gold-accent);
+        box-shadow: 0 20px 40px rgba(79, 128, 226, 0.5);
+      }
+
+      .athlete-photo {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        transition: transform 0.4s ease;
+      }
+
+      .athlete-card:hover .athlete-photo {
+        transform: scale(1.05);
+      }
+
+      .athlete-name {
+        font-family: "Montserrat", sans-serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--gold-accent);
+        margin-bottom: 10px;
+      }
+
+      .athlete-style {
+        color: #e2e8f0;
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 15px;
+      }
+
+      .athlete-description {
+        color: #94a3b8;
+        font-size: 1rem;
+        line-height: 1.8;
+      }
+
+      /* Footer */
+      .footer-section {
+        background: var(--background-dark);
+        border-top: 2px solid var(--gold-accent);
+        padding: 100px 0 50px;
+      }
+
+      .footer-title {
+        font-family: "Montserrat", sans-serif;
+        color: var(--gold-accent);
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+      }
+
+      .footer-link {
+        color: #e2e8f0;
+        text-decoration: none;
+        font-family: "Lora", serif;
+        font-weight: 500;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .footer-link:hover {
+        color: var(--gold-accent);
+        transform: translateX(10px);
+      }
+
+      .footer-text {
+        color: #94a3b8;
+        font-size: 1.1rem;
+        line-height: 1.8;
+      }
+
+      /* Animations */
+      @keyframes glow {
+        from {
+          text-shadow: 0 0 15px rgba(184, 151, 120, 0.5);
+        }
+        to {
+          text-shadow: 0 0 30px rgba(184, 151, 120, 0.8);
+        }
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 3rem;
+        }
+
+        .section-title {
+          font-size: 2.8rem;
+        }
+
+        .athlete-photo {
+          height: 200px;
+        }
+
+        .athlete-name {
+          font-size: 1.6rem;
+        }
+
+        .athlete-style {
+          font-size: 1rem;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .hero-title {
+          font-size: 2.5rem;
+        }
+
+        .section-title {
+          font-size: 2.2rem;
+        }
+
+        .athlete-photo {
+          height: 180px;
+        }
+
+        .athlete-name {
+          font-size: 1.4rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+      <div class="container">
+        <a class="navbar-brand" href="index.html"> <i class="bi bi-lightning-charge"></i> LCS </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#home">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html#events">Events</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Athletes</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container hero-content">
+        <h1 class="hero-title mb-4">Our Fighters</h1>
+        <p class="hero-description">Meet the elite athletes of Legacy Combat Series, showcasing unparalleled skill, determination, and passion in the ring.</p>
+      </div>
+    </section>
+
+    <!-- Athletes Section -->
+    <section class="athletes-section">
+      <div class="container">
+        <h2 class="section-title">Meet the Fighters</h2>
+        <div class="row g-4">
+          <div class="col-lg-4 col-md-6">
+            <div class="athlete-card">
+              <img src="https://via.placeholder.com/400x300" alt="Petra Kurniawan" class="athlete-photo" />
+              <div class="athlete-name">Petra “The Butcher” Kurniawan</div>
+              <div class="athlete-style"><i class="bi bi-shield-shaded me-2"></i>Muay Thai | Bantamweight | Sukoharjo</div>
+              <p class="athlete-description">Petra is a Muay Thai powerhouse, known for his devastating elbow strikes and relentless fighting style.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="athlete-card">
+              <img src="Ilia Topuria.jpg" alt="Topuria" class="athlete-photo" />
+              <div class="athlete-name">Illia "El Matador" Topuria</div>
+              <div class="athlete-style"><i class="bi bi-boxing-glove me-2"></i>MMA | Lightweight | Sukoharjo</div>
+              <p class="athlete-description">Riko's versatility in MMA makes him a formidable opponent, excelling in both striking and grappling.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="athlete-card">
+              <img src="Charles Oliveira.jpg" alt="Oliveira" class="athlete-photo" />
+              <div class="athlete-name">Charles "Do Bronx" Oliveira</div>
+              <div class="athlete-style"><i class="bi bi-boxing-glove me-2"></i>MMA | Lightweight | Favella</div>
+              <p class="athlete-description">
+                Charles Oliveira, known as "Do Bronx", is a Brazilian MMA fighter and former UFC Lightweight Champion. He holds the record for the most submissions in UFC history. Oliveira combines elite Brazilian Jiu-Jitsu with sharp,
+                evolving striking. Known for his aggressive style, resilience, and ability to finish fights from any position, he remains one of the most dangerous fighters in the division.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+      <div class="container">
+        <div class="row g-5">
+          <div class="col-lg-4 col-md-6">
+            <h3 class="footer-title"><i class="bi bi-lightning-charge me-2"></i>LCS</h3>
+            <p class="footer-text">Legacy isn’t given. It’s earned—inside the cage.</p>
+          </div>
+          <div class="col-lg-2 col-md-6">
+            <h3 class="footer-title">Quick Links</h3>
+            <div class="d-flex flex-column gap-3">
+              <a href="index.html#home" class="footer-link"><i class="bi bi-house me-2"></i>Home</a>
+              <a href="index.html#about" class="footer-link"><i class="bi bi-info-circle me-2"></i>About Us</a>
+              <a href="index.html#events" class="footer-link"><i class="bi bi-calendar-event me-2"></i>Events</a>
+              <a href="#" class="footer-link"><i class="bi bi-person-badge me-2"></i>Athletes</a>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-6">
+            <h3 class="footer-title">Watch Live</h3>
+            <div class="d-flex flex-column gap-3">
+              <a href="#" class="footer-link"><i class="bi bi-tv me-2"></i>Vidio Sports</a>
+              <a href="#" class="footer-link"><i class="bi bi-youtube me-2"></i>YouTube Channel</a>
+              <a href="#" class="footer-link"><i class="bi bi-credit-card me-2"></i>Pay-Per-View</a>
+              <a href="#" class="footer-link"><i class="bi bi-phone me-2"></i>Mobile App</a>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <h3 class="footer-title">Follow Us</h3>
+            <div class="d-flex gap-3">
+              <a href="#" class="footer-link" style="font-size: 1.5rem"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="footer-link" style="font-size: 1.5rem"><i class="bi bi-youtube"></i></a>
+              <a href="#" class="footer-link" style="font-size: 1.5rem"><i class="bi bi-tiktok"></i></a>
+              <a href="#" class="footer-link" style="font-size: 1.5rem"><i class="bi bi-facebook"></i></a>
+            </div>
+          </div>
+        </div>
+        <hr class="my-5" style="border-color: var(--gold-accent)" />
+        <div class="text-center">
+          <p class="footer-text mb-0">© 2025 Legacy Combat Series. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Initialize GSAP animations
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Navbar scroll effect
+      window.addEventListener("scroll", () => {
+        const navbar = document.querySelector(".navbar-custom");
+        if (window.scrollY > 100) {
+          navbar.style.background = "rgba(11, 19, 43, 0.98)";
+          navbar.style.boxShadow = "0 6px 20px rgba(0, 0, 0, 0.4)";
+        } else {
+          navbar.style.background = "rgba(11, 19, 43, 0.95)";
+          navbar.style.boxShadow = "0 4px 20px rgba(0, 0, 0, 0.3)";
+        }
+      });
+
+      // GSAP ScrollTrigger for hero section
+      gsap.from(".hero-content", {
+        opacity: 0,
+        y: 50,
+        duration: 1.2,
+        ease: "power2.out",
+        delay: 0.3,
+      });
+
+      // GSAP ScrollTrigger for athletes section
+      gsap.from(".athletes-section", {
+        opacity: 0,
+        y: 100,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".athletes-section",
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      // GSAP for athlete cards
+      gsap.utils.toArray(".athlete-card").forEach((card) => {
+        gsap.from(card, {
+          opacity: 0,
+          y: 50,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        });
+      });
+
+      // Particle effect for hero section
+      const hero = document.querySelector(".hero");
+      for (let i = 0; i < 20; i++) {
+        const particle = document.createElement("div");
+        particle.style.position = "absolute";
+        particle.style.width = "5px";
+        particle.style.height = "5px";
+        particle.style.background = "rgba(79, 128, 226, 0.4)";
+        particle.style.borderRadius = "50%";
+        particle.style.left = Math.random() * 100 + "%";
+        particle.style.top = Math.random() * 100 + "%";
+        particle.style.animation = `float ${4 + Math.random() * 6}s ease-in-out infinite`;
+        hero.appendChild(particle);
+      }
+
+      const style = document.createElement("style");
+      style.textContent = `
+        @keyframes float {
+          0%, 100% { transform: translateY(0); opacity: 0.4; }
+          50% { transform: translateY(-30px); opacity: 0.7; }
+        }
+      `;
+      document.head.appendChild(style);
+    </script>
+  </body>
+</html>
